@@ -1,5 +1,3 @@
-package com.example.demo.util;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -11,9 +9,9 @@ import java.util.stream.Stream;
 /**
  * 一个轻量的 Http 请求工具,要求JDK8
  *
- * @since 1.8
  * @author wanna
  * @createTime 2018-05-06
+ * @since 1.8
  */
 public class HttpRequest {
 
@@ -118,7 +116,8 @@ public class HttpRequest {
             Object value = entry.getValue();
 
             if (value instanceof Collection) {
-                builder.append(String.join(",", (Collection) value)).append("&");
+                ((Collection) value).stream().forEach(s -> builder.append(s + ","));
+                builder.deleteCharAt(builder.lastIndexOf(",")).append("&");
             } else if (value instanceof Object[]) {
                 Stream.of((Object[]) value).forEach(s -> builder.append(s + ","));
                 builder.deleteCharAt(builder.lastIndexOf(",")).append("&");
