@@ -21,7 +21,7 @@ public class HttpRequest {
 
     private static final String POST = "POST";
 
-    private int DEFAULT_TIME_OUT = 6000;
+    private static final int DEFAULT_TIME_OUT = 6000;
 
     private String url;
 
