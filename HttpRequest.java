@@ -9,15 +9,21 @@ import java.util.stream.Stream;
 /**
  * 一个轻量的 Http 请求工具,要求JDK8
  *
+ * @since 1.8
  * @author wanna
  * @createTime 2018-05-06
- * @since 1.8
  */
 public class HttpRequest {
 
     private static final String GET = "GET";
 
     private static final String POST = "POST";
+
+    private static final String NEW_LINE = "\r\n";
+
+    private static final String UTF8 = "UTF-8";
+
+    private static final String CHARSET = "Charset";
 
     private static final int DEFAULT_TIME_OUT = 6000;
 
@@ -51,7 +57,7 @@ public class HttpRequest {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         connection.setRequestMethod(method);
-        connection.setRequestProperty("Charset", "UTF-8");
+        connection.setRequestProperty(CHARSET, UTF8);
         connection.setConnectTimeout(DEFAULT_TIME_OUT);
 
         return GET.equals(method) ? requestGet(connection) : requestPost(connection);
@@ -91,7 +97,7 @@ public class HttpRequest {
 
         String line;
         while ((line = buffer.readLine()) != null) {
-            builder.append(line);
+            builder.append(line).append(NEW_LINE);
         }
 
         close(buffer, reader, is);
@@ -116,7 +122,7 @@ public class HttpRequest {
             Object value = entry.getValue();
 
             if (value instanceof Collection) {
-                ((Collection) value).stream().forEach(s -> builder.append(s + ","));
+                ((Collection) value).forEach(s -> builder.append(s + ","));
                 builder.deleteCharAt(builder.lastIndexOf(",")).append("&");
             } else if (value instanceof Object[]) {
                 Stream.of((Object[]) value).forEach(s -> builder.append(s + ","));
